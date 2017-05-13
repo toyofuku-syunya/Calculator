@@ -48,9 +48,10 @@ class ViewController: UIViewController {
         isDoubleMode=false
         numberStr=String(number)
         secondNumberStr=String(secondNumber)
-        numberLabel.text=numberStr
+        DoubleIntJudge(numberType: "number")
+        DoubleIntJudge(numberType: "result")
         numberLabel.textAlignment = .center
-        secondNumberLabel.text=secondNumberStr
+        DoubleIntJudge(numberType: "secondNumber")
         secondNumberLabel.textAlignment = .center
         switch command{
         case 0:commandA="+"
@@ -77,10 +78,8 @@ class ViewController: UIViewController {
                 }
                 DoubleNumberDouble=Double(DoubleNumber)
                 secondNumber=secondNumber+(pushedNumber/DoubleNumberDouble)
-                secondNumberStr=String(secondNumber)
-                DoubleIntJudge(secondNumber)
-                result.text = secondNumberStr
-                secondNumberLabel.text = secondNumberStr
+                DoubleIntJudge(numberType : "secondNumber")
+                DoubleIntJudge(numberType: "result")
             }else{
                 for i in 1...DoubleTimes{
                     DoubleNumber=DoubleNumber*10
@@ -90,21 +89,20 @@ class ViewController: UIViewController {
                 }
                 DoubleNumberDouble=Double(DoubleNumber)
                 number=number+(pushedNumber/DoubleNumberDouble)
-                numberStr=String(number)
-                result.text = numberStr
-                numberLabel.text = numberStr
+                DoubleIntJudge(numberType: "result")
+                DoubleIntJudge(numberType: "number")
             }
             DoubleNumber=1
         }else{
             if isCalculate==true{
             secondNumber=secondNumber*10+pushedNumber
             secondNumberStr=String(secondNumber)
-            result.text=secondNumberStr
+            DoubleIntJudge(numberType: "result")
         }else{
         number=number*10+pushedNumber
         print(number)
-                numberStr=String(number)
-                result.text = numberStr
+                DoubleIntJudge(numberType: "number")
+                DoubleIntJudge(numberType: "result")
                 result.backgroundColor = UIColor.white
         }
         calculating()
@@ -125,8 +123,7 @@ class ViewController: UIViewController {
             case 3:number=number/secondNumber
             default:number=0
             }
-            numberStr=String(number)
-            result.text=numberStr
+            DoubleIntJudge(numberType: "result")
             isCalculate=false
             secondNumber=0
             calculating()
@@ -143,22 +140,22 @@ class ViewController: UIViewController {
         numberStr = String(number)
         result.text=numberStr
         isDoubleMode=false
+        isCalculate = false 
         
     }
     
     @IBAction func changepm(){
         if isCalculate {
             secondNumber = -1 * secondNumber
-            secondNumberStr=String(secondNumber)
-            secondNumberLabel.text=secondNumberStr
+            DoubleIntJudge(numberType: "secondNumber")
             secondNumberLabel.textAlignment = .center
-            result.text = secondNumberStr
+            DoubleIntJudge(numberType: "result")
         } else {
             number = -1 * number
             numberStr=String(number)
-            numberLabel.text=numberStr
+            DoubleIntJudge(numberType: "number")
             numberLabel.textAlignment = .center
-            result.text = numberStr
+            DoubleIntJudge(numberType: "result")
         }
     }
     
@@ -232,27 +229,54 @@ class ViewController: UIViewController {
     }
     
     
-    func DoubleIntJudge(numberType:Int){
+    func DoubleIntJudge(numberType:String){
         switch numberType {
-        case : number
-    numberStr = String(number)
-        if numberStr.contains(".") {
-        print("foo")
+            
+        case "number":
+        numberStr = String(number)
+        if numberStr.contains(".0") {
+        
+        numberLabel.text = String(Int(number))
+        }else{
+        numberStr = String(number)
+        numberLabel.text = numberStr
+        }
+            
+        case "secondNumber":
+        secondNumberStr = String(secondNumber)
+        if secondNumberStr.contains(".0"){
+            secondNumberLabel.text = String(Int(secondNumber))
+        }else{
+            secondNumberStr = String(secondNumber)
+            secondNumberLabel.text = secondNumberStr
             }
-        case : secondNumber {
-                
+            
+        case "result":
+            
+            if isCalculate {
+                secondNumberStr = String(secondNumber)
+                if secondNumberStr.contains(".0") {
+                    result.text = String(Int(secondNumber))
+                }else{
+                    result.text = secondNumberStr
+                }
+            }else{
+                numberStr = String(number)
+                if numberStr.contains(".0"){
+                    result.text = String(Int(number))
+                }else{
+                    result.text = numberStr
+                }
             }
+            
+        default: break
     }
     }
-    }
-    
+
 
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
 }
-
-
